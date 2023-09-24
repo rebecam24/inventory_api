@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+
+    php:
+        build:
+            context: ./docker/php
+            dockerfile: Dockerfile
+        container_name: cont-php
+        ports:
+            - 9000:80
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - d_network
+
+    db:
+        image: mariadb
+        container_name: cont-mariadb
+        ports:
+            - 3306:3306
+        environment:
+            TZ: 'America/Caracas'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: inventory_api
+        volumes:
+            - d_db:/var/lib/mysql
+        networks:
+            - d_network
+
+    web:
+        image: nginx
+        container_name: cont-nginx
+        ports:
+            - 80:80
+        volumes:
+            - ./:/var/www/html
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php
+            - db
+        networks:
+            - d_network
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: cont-phpmyadmin
+        ports:
+            - 8081:80
+        depends_on:
+            - db
+        networks:
+            - d_network
+
+volumes:
+    d_db:
+        driver: local
+
+networks:
+    d_network:
+        driver: bridge
