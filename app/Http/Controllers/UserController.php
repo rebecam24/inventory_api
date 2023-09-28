@@ -81,7 +81,7 @@ class UserController extends Controller
 
         $data = $request->validate([
             'role_id'       => ['nullable','integer','exists:roles,id'],
-            'email'         => ['nullable','string','email','unique:users,email'],
+            'email'         => ['nullable','string','email'],
             'password'      => ['nullable','string','min:8'],
             'name'          => ['nullable','string','min:3','max:45'],
             'lastname'      => ['nullable','string','min:3','max:45'],
