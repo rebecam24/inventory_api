@@ -32,4 +32,13 @@ Route::middleware('auth:sanctum')->group( function(){
 
     // Categories
     Route::apiResource('categories',CategoryController::class)->middleware('admin','mod');
+
+    // Payment Methods
+    Route::apiResource('payment-methods',PaymentMethodController::class)->middleware('admin','mod');
+
+    // Currency
+    Route::apiResource('currency',CurrencyController::class)->middleware('admin','mod');
+
+    // Clients
+    Route::apiResource('clients',ClientController::class);
 });
