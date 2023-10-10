@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Traits\ApiResponse;
-use App\Models\User;
 
-class UserController extends Controller
+use App\Models\Clients;
+use App\Traits\ApiResponse;
+
+class ClientController extends Controller
 {
     use ApiResponse;
     /**
@@ -16,11 +17,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $clients = Clients::all();
 
         return $this->success([
-            'users' => $users,
-        ],'Users list');
+            'clients' => $clients,
+        ],'clients list');
     }
 
     /**
@@ -31,29 +32,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
-
         $data = $request->validate([
-            'role_id'       => ['required','integer','exists:roles,id'],
-            'email'         => ['required','string','email','unique:users,email'],
-            'password'      => ['required','string','min:8'],
             'name'          => ['required','string','min:3','max:45'],
             'lastname'      => ['required','string','min:3','max:45'],
-            'birthday'      => ['required','date'],
-            'phone'         => ['required','string','min:7','max:15'],
             'id_number'     => ['required','string','min:3','max:45'],
             'address'       => ['required','string','min:10','max:100'],
-            'gender'        => ['required','string','max:45'],
-            'url_image'     => ['nullable','url'],
-            'work_position' => ['nullable','string','max:45'],
+            'phone'         => ['required','string','min:7','max:15'],
         ]);
 
-        $data['password'] = bcrypt($data['password']);
-        $user = User::create($data);
+        $client = Clients::create($data);
+
         return $this->success([
-            'user'  => $user,
-        ],'Registered User');
+            'client'  => $client,
+        ],'Registered client');
     }
+
     /**
      * Display the specified resource.
      *
@@ -62,11 +55,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $client = Clients::findOrFail($id);
 
         return $this->success([
-            'user' => $user,
-        ],'User details');
+            'client' => $client,
+        ],'client details');
     }
 
     /**
@@ -78,33 +71,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $data = $request->validate([
-            'role_id'       => ['nullable','integer','exists:roles,id'],
-            'email'         => ['nullable','string','email'],
-            'password'      => ['nullable','string','min:8'],
             'name'          => ['nullable','string','min:3','max:45'],
             'lastname'      => ['nullable','string','min:3','max:45'],
-            'birthday'      => ['nullable','date'],
-            'phone'         => ['nullable','string','min:7','max:15'],
             'id_number'     => ['nullable','string','min:3','max:45'],
             'address'       => ['nullable','string','min:10','max:100'],
-            'gender'        => ['nullable','string','max:45'],
-            'url_image'     => ['nullable','url'],
-            'work_position' => ['nullable','string','max:45']
+            'phone'         => ['nullable','string','min:7','max:15'],
         ]);
-        // return response()->json($data);
 
-        if(isset($data['password'])){
-            $data['password'] = bcrypt($data['password']);
-        }
-
-        $user = User::findOrFail($id);
-        $user->update($data);
+        $client = Clients::findOrFail($id);
+        $client->update($data);
 
         return $this->success([
-            'user'  => $user,
-        ],'Updated User');
+            'client'  => $client,
+        ],'Updated client');
     }
 
     /**
@@ -115,9 +95,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        $client = Clients::find($id);
+        $client->delete();
 
-        return $this->success([],'User Deleted ');
+        return $this->success([],'client Deleted ');
     }
 }

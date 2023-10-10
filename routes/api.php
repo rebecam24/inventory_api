@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\ClientController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,4 +35,13 @@ Route::middleware('auth:sanctum')->group( function(){
 
     // Categories
     Route::apiResource('categories',CategoryController::class)->middleware('admin','mod');
+
+    // Payment Methods
+    Route::apiResource('payment-methods',PaymentMethodController::class)->middleware('admin','mod');
+
+    // Currency
+    Route::apiResource('currency',CurrencyController::class)->middleware('admin','mod');
+
+    // Clients
+    Route::apiResource('clients',ClientController::class);
 });
