@@ -9,6 +9,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,4 +46,10 @@ Route::middleware('auth:sanctum')->group( function(){
 
     // Clients
     Route::apiResource('clients',ClientController::class);
+
+    // Providers
+    Route::apiResource('providers',ProviderController::class)->middleware('admin','mod');
+
+    // Products
+    Route::apiResource('products',ProductController::class);
 });
