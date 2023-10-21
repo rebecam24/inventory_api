@@ -17,7 +17,7 @@ class Clients extends Model
         'phone',
     ];
 
-    // public function invoices(){
-    //     return $this->hasMany(Invoice::class);
-    // }
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
 }

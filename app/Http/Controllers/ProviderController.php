@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Models\Clients;
+use App\Models\Provider;
 use App\Traits\ApiResponse;
+use App\Http\Resources\ProviderResource as ProviderCollection;
 
-class ClientController extends Controller
+class ProviderController extends Controller
 {
     use ApiResponse;
     /**
@@ -17,11 +17,11 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Clients::all();
+        $providers = Provider::all();
 
         return $this->success([
-            'clients' => $clients,
-        ],'clients list');
+            'providers' => ProviderCollection::collection($providers),
+        ],'providers list');
     }
 
     /**
@@ -38,13 +38,15 @@ class ClientController extends Controller
             'id_number'     => ['required','string','min:3','max:45'],
             'address'       => ['required','string','min:10','max:100'],
             'phone'         => ['required','string','min:7','max:15'],
+            'email'         => ['required','string','email'],
+            'description'   => ['nullable','string','max:45'],
         ]);
 
-        $client = Clients::create($data);
+        $provider = Provider::create($data);
 
         return $this->success([
-            'client'  => $client,
-        ],'Registered client');
+            'provider'  => new ProviderCollection($provider),
+        ],'Registered provider');
     }
 
     /**
@@ -55,11 +57,11 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        $client = Clients::findOrFail($id);
+        $provider = Provider::findOrFail($id);
 
         return $this->success([
-            'client' => $client,
-        ],'client details');
+            'provider' => new ProviderCollection($provider),
+        ],'provider details');
     }
 
     /**
@@ -77,14 +79,16 @@ class ClientController extends Controller
             'id_number'     => ['nullable','string','min:3','max:45'],
             'address'       => ['nullable','string','min:10','max:100'],
             'phone'         => ['nullable','string','min:7','max:15'],
+            'email'         => ['nullable','string','email'],
+            'description'   => ['nullable','string','max:45'],
         ]);
 
-        $client = Clients::findOrFail($id);
-        $client->update($data);
+        $provider = Provider::findOrFail($id);
+        $provider->update($data);
 
         return $this->success([
-            'client'  => $client,
-        ],'Updated client');
+            'provider'  => new ProviderCollection($provider),
+        ],'Updated provider');
     }
 
     /**
@@ -95,9 +99,9 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $client = Clients::find($id);
-        $client->delete();
+        $provider = Provider::find($id);
+        $provider->delete();
 
-        return $this->success([],'client Deleted ');
+        return $this->success([],'provider Deleted ');
     }
 }

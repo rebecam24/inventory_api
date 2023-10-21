@@ -37,7 +37,8 @@ class AddModificationsOnUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropForeign('role_id');
+            $table->dropColumn(['role_id','address','birthday','gender','id_number','lastname','phone','url_image','work_position']);
         });
     }
 }
