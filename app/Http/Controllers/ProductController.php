@@ -37,9 +37,9 @@ class ProductController extends Controller
             'price'              => ['required','numeric'],
             'quantity_available' => ['required','integer'],
             'IVA'                => ['required','numeric'],
-            'url_image'          => ['required','url'],
+            'url_image'          => ['nullable','url'],
             'category_id'        => ['required','string','integer','exists:categories,id'],
-            'provider_id'        => ['required','string','integer','exists:providers,id'],
+            'provider_id'        => ['nullable','string','integer','exists:providers,id'],
         ]);
 
         $product = Product::create($data);
