@@ -38,8 +38,8 @@ class ProductController extends Controller
             'quantity_available' => ['required','integer'],
             'IVA'                => ['required','numeric'],
             'url_image'          => ['nullable','url'],
-            'category_id'        => ['required','string','integer','exists:categories,id'],
-            'provider_id'        => ['nullable','string','integer','exists:providers,id'],
+            'category_id'        => ['required','integer','exists:categories,id'],
+            'provider_id'        => ['nullable','integer','exists:providers,id'],
         ]);
 
         $product = Product::create($data);
@@ -79,8 +79,8 @@ class ProductController extends Controller
             'quantity_available' => ['nullable','integer'],
             'IVA'                => ['nullable','numeric'],
             'url_image'          => ['nullable','url'],
-            'category_id'        => ['nullable','string','integer','exists:categories,id'],
-            'provider_id'        => ['nullable','string','integer','exists:providers,id'],
+            'category_id'        => ['nullable','integer','exists:categories,id'],
+            'provider_id'        => ['nullable','integer','exists:providers,id'],
         ]);
 
         $product = Product::findOrFail($id);
